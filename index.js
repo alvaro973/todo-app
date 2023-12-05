@@ -19,7 +19,8 @@ app.post('/criar', (requisicao, resposta) =>{
     const decricao = requisicao.body.decricao
     const completa = 0
 
-    const sql = `
+// banco de dados foi escrito descricao sem o "S"
+    const sql = ` 
         INSERT INTO tarefas(decricao, completa)
         VALUES ('${decricao}', '${completa}') 
     `
@@ -31,7 +32,27 @@ app.post('/criar', (requisicao, resposta) =>{
         resposta.redirect('/')
     })
 })
+// banco de dados foi escrito descricao sem o "S"
 app.get('/',(requisicao, resposta) => {
+    const sql = 'SELECT * FROM  tarefas'
+
+    conexao.query(sql, (erro, dados) =>{
+        if (erro){
+           return console.log(erro)
+        }
+
+        console.log(dados)
+       const tarefas = dados.map((dado) => {
+        return{
+            id: dado.id,
+            decricao: dado.decricao,
+            completa: dado.completa === 0 ? false : true
+        }
+       })
+       console.log(tarefas)
+
+    })
+
     resposta.render('home')
 })
 
