@@ -1,3 +1,4 @@
+
 <main>
     <section class="tarefas">
        {{#each tarefas}}
@@ -9,7 +10,7 @@
                 </div>
                
 
-                <button>
+                  <button onclick="excluirTarefa({{this.id}})">
                     <img src="/imagens/x-icon.png" alt="ícone de X para escluir uma tarefa">
                 </button>
             </form>   
