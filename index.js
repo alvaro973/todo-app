@@ -34,6 +34,25 @@ app.post('/completar', (requisicao, resposta) => {
     })
 })
 
+app.post('/descompletar', (requisicao, resposta) => {
+    const id = requisicao.body.id
+
+    console.log(id)
+
+    const sql = `
+        UPDATE tarefas
+        SET completa = '0'
+        WHERE id = ${id}
+    `
+
+    conexao.query(sql, (erro) => {
+        if (erro) {
+            return console.log(erro)
+        }
+        resposta.redirect('/')
+    })
+})
+
 app.post('/criar', (requisicao, resposta) =>{
     const decricao = requisicao.body.decricao
     const completa = 0
@@ -68,7 +87,13 @@ app.get('/',(requisicao, resposta) => {
         }
        })
 
-       resposta.render('home', {tarefas})
+       const tarefasAtivas = tarefas.filter((tarefa) => {
+        return tarefa.completa === false && tarefa
+       })
+
+       const quantidadeTarefasAtivas = tarefasAtivas.length
+
+       resposta.render('home', {tarefas, quantidadeTarefasAtivas})
     })
 })
 
