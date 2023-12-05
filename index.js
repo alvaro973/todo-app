@@ -70,6 +70,34 @@ app.post('/criar', (requisicao, resposta) =>{
         resposta.redirect('/')
     })
 })
+
+app.get('/ativas', (requisicao, resposta) => {
+    const sql = `
+        SELECT * FROM tarefas
+        WHERE completa = 0
+    `
+
+    conexao.query(sql, (erro, dados) =>{
+        if (erro){
+            return console.log(erro)
+        }
+//decricao..
+
+        const tarefas = dados.map((dado) => {
+            return {
+                id: dado.id,
+                decricao: dado.decricao,
+                completa: false
+            }
+        })
+
+        const quantidadeTarefas = tarefas.length
+
+        resposta.render('ativas', {tarefas, quantidadeTarefas})
+    })
+})
+
+
 // banco de dados foi escrito descricao sem o "S"
 app.get('/',(requisicao, resposta) => {
     const sql = 'SELECT * FROM  tarefas'
